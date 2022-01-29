@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'COVID CHID-SAI',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(scaffoldBackgroundColor: Color(0xFF1b2735)),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
       home: HomePage(),
     );
   }
