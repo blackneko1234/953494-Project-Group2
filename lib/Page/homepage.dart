@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
-import 'dart:ffi';
+// ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, unused_local_variable, avoid_print, unnecessary_brace_in_string_interps
+/* import 'dart:ffi'; */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,25 +27,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List TestData = ["Kazuya", "Ricado", "Billy"];
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           title: Text("COVID-CHID-SAI"),
-      ),
-      body: Center(
-        child: FutureBuilder<Album>(
-          future: futureAlbum,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data!.title);
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
-            return const CircularProgressIndicator();
-          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
+        body: FutureBuilder<List<Photo>>(
+            future: fetchPhotos(http.Client()),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text("An error has occurred"));
+              } else if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, i) {
+                    return ListTile(
+                      leading: Image.network(snapshot.data![i].thumbnailUrl),
+                      title: Text(snapshot.data![i].title),
+                      subtitle: Text("ID: " +
+                          snapshot.data![i].id.toString() +
+                          "\nAlbum ID: " +
+                          snapshot.data![i].albumId.toString()),
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MapPage()));
@@ -54,8 +66,7 @@ class _HomePageState extends State<HomePage> {
             Icons.map,
             color: Colors.white,
           ),
-        )
-    );
+        ));
   }
 }
 
@@ -91,5 +102,50 @@ Future<Album> fetchAlbum() async {
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception('Failed to load album');
+  }
+}
+
+Future<List<Photo>> fetchPhotos(http.Client client) async {
+  final response = await client
+      .get(Uri.parse('https://jsonplaceholder.typicode.com/photos'));
+
+  // Use the compute function to run parsePhotos in a separate isolate.
+  print("response.body = ${response.body}");
+  print("parsePhotos = ${parsePhotos}");
+  print(
+      "compute(parsePhotos, response.body) = ${compute(parsePhotos, response.body)}");
+  return compute(parsePhotos, response.body);
+}
+
+// A function that converts a response body into a List<Photo>.
+List<Photo> parsePhotos(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return parsed.map<Photo>((json) => Photo.fromJson(json)).toList();
+}
+
+class Photo {
+  final int albumId;
+  final int id;
+  final String title;
+  final String url;
+  final String thumbnailUrl;
+
+  const Photo({
+    required this.albumId,
+    required this.id,
+    required this.title,
+    required this.url,
+    required this.thumbnailUrl,
+  });
+
+  factory Photo.fromJson(Map<String, dynamic> json) {
+    return Photo(
+      albumId: json['albumId'] as int,
+      id: json['id'] as int,
+      title: json['title'] as String,
+      url: json['url'] as String,
+      thumbnailUrl: json['thumbnailUrl'] as String,
+    );
   }
 }
