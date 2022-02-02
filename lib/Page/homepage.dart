@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:group2/Page/mappage.dart';
 import 'package:group2/service/covid_lab_api.dart';
+import 'package:group2/Page/searchpage.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -80,16 +81,36 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MapPage()));
-          },
-          backgroundColor: Color(0xFF48a3e2),
-          child: Icon(
-            Icons.map,
-            color: Colors.white,
-          ),
-        ));
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MapPage()));
+              },
+              backgroundColor: Color(0xFF48a3e2),
+              child: Icon(
+                Icons.map,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Jobs()));
+              },
+              backgroundColor: Color(0xFF48a3e2),
+              child: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+            ),
+          ]
+        )
+    );
   }
 }
