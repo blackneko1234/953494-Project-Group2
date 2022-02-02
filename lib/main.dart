@@ -1,10 +1,9 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'Page/homepage.dart';
+import 'package:group2/Page/homepage.dart';
+
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,3 +19,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
