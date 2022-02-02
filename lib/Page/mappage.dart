@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_final_fields, unused_field, prefer_const_constructors, unnecessary_new, unnecessary_null_comparison, unused_local_variable, avoid_print
+// ignore_for_file: unused_import, prefer_final_fields, unused_field, prefer_const_constructors, unnecessary_new, unnecessary_null_comparison, unused_local_variable, avoid_print, prefer_typing_uninitialized_variables
 
 import 'dart:async';
 
@@ -14,8 +14,8 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  late LatLng currentLatLng;
   Completer<GoogleMapController> _controller = Completer();
+  late LatLng currentLatLng;
 
   @override
   void initState() {
@@ -37,7 +37,6 @@ class _MapPageState extends State<MapPage> {
       body: currentLatLng == null
           ? Center(child: CircularProgressIndicator())
           : GoogleMap(
-              myLocationEnabled: true,
               initialCameraPosition: CameraPosition(
                 target: currentLatLng,
                 zoom: 15,
@@ -45,6 +44,7 @@ class _MapPageState extends State<MapPage> {
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
               },
+              myLocationEnabled: true,
             ),
     );
   }
