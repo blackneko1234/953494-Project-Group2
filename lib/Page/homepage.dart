@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:group2/model/covid.dart';
 import 'package:group2/service/covid_api.dart';
@@ -38,11 +39,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: ListView.builder(
         itemCount: allCovid.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (context,index){
           final item = allCovid[index];
           return Card(
             child: ListTile(
               subtitle: Text('${item.caseid}'),
+              title: Text('${item.country}'),
             ),
           );
         },

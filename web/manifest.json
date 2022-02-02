@@ -1,6 +1,6 @@
 {
-    "name": "group2",
-    "short_name": "group2",
+    "name": "more_on_api",
+    "short_name": "more_on_api",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
