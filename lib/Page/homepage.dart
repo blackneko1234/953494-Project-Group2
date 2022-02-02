@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:group2/Page/mappage.dart';
-import 'package:group2/model/covid.dart';
 import 'package:group2/service/covid_lab_api.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,13 +14,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late final CovidLabApi covidLabApi = CovidLabApi();
-  late List<Covid> allCovid = [];
-
+  late Map<String, dynamic> res = {};
+  late List<dynamic> itemList = [];
   Future<String?> getAllCovid() async {
     var response = await covidLabApi.fetchCovidLab();
     setState(() {
-      List res = json.decode(response.body);
-      allCovid = res.map((covid) => Covid.fromJson(covid)).toList();
+      res = json.decode(utf8.decode(response.bodyBytes.toList()));
+      itemList = res["items"];
     });
   }
 
@@ -35,25 +34,51 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Covid Chid Sai"),
+          title: Text("COVID CHID-SAI"),
         ),
-        body: ListView.builder(
-          itemCount: allCovid.length,
-          itemBuilder: (context, index) {
-            final item = allCovid[index];
-            return Card(
-              child: ExpansionTile(
-                title: Text('Country: ${item.items[0]}'),
-                subtitle: Text('Cases:'),
-                children: [
-                  ListTile(
-                    title: Text('${item.items[0]}'),
-                    subtitle: Text('${item.items[0]}'),
-                  ),
-                ],
+        body: Column(
+          children: [
+            /* Padding(
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+              child: TextField(
+                style: TextStyle(fontSize: 14.0, height: 0.5),
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               ),
-            );
-          },
+            ), */
+            Expanded(
+              child: ListView.builder(
+                itemCount: itemList.length,
+                itemBuilder: (context, index) {
+                  var detail = itemList[index]["rm"];
+                  return Card(
+                    child: ExpansionTile(
+                      title: Text('${itemList[index]["n"]}'),
+                      subtitle: Text('Province: ${itemList[index]["p"]}'),
+                      children: [
+                        detail == ""
+                            ? ListTile(
+                                title: Text('Tel: ${itemList[index]["mob"]}'),
+                                subtitle: Text(
+                                    '${itemList[index]["adr"]}\nDetails: ไม่พบข้อมูลในส่วนนี้ '),
+                              )
+                            : ListTile(
+                                title: Text('Tel: ${itemList[index]["mob"]}'),
+                                subtitle: Text(
+                                    '${itemList[index]["adr"]}\nDetails: ${itemList[index]["rm"]}'),
+                              ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {

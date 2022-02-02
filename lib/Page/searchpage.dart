@@ -1,10 +1,9 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
-import 'Page/searchpage.dart';
 import 'package:http/http.dart' as http;
-
 
 class Jobs extends StatefulWidget {
   Jobs() : super();
