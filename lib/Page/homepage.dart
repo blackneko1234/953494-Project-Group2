@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("COVID CHID-SAI"),
+          title: Text("COVID CHID-SAI Lab Finder"),
         ),
         body: Column(
           children: [
@@ -81,36 +81,33 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MapPage()));
-              },
-              backgroundColor: Color(0xFF48a3e2),
-              child: Icon(
-                Icons.map,
-                color: Colors.white,
-              ),
+        floatingActionButton:
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => MapPage()));
+            },
+            backgroundColor: Color(0xFF48a3e2),
+            child: Icon(
+              Icons.map,
+              color: Colors.white,
             ),
-            SizedBox(
-              width: 10,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Jobs()));
+            },
+            backgroundColor: Color(0xFF48a3e2),
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
             ),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Jobs()));
-              },
-              backgroundColor: Color(0xFF48a3e2),
-              child: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-            ),
-          ]
-        )
-    );
+          ),
+        ]));
   }
 }
