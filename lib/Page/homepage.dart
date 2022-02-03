@@ -35,7 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.teal.shade400,
           title: Text("COVID CHID-SAI"),
+          leading: Image.asset("assets/logo.png"),
         ),
         body: Column(
           children: [
@@ -59,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   var detail = itemList[index]["rm"];
                   return Card(
                     child: ExpansionTile(
-                      title: Text('${itemList[index]["n"]}'),
+                      title: Text('${itemList[index]["n"]}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
                       subtitle: Text('Province: ${itemList[index]["p"]}'),
                       children: [
                         detail == ""
@@ -89,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => MapPage()));
               },
-              backgroundColor: Color(0xFF48a3e2),
+              backgroundColor: Colors.teal.shade400,
               child: Icon(
                 Icons.map,
                 color: Colors.white,
@@ -103,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Jobs()));
               },
-              backgroundColor: Color(0xFF48a3e2),
+              backgroundColor: Colors.teal.shade400,
               child: Icon(
                 Icons.search,
                 color: Colors.white,
