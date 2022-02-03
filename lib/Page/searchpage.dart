@@ -1,15 +1,15 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class Jobs extends StatefulWidget {
-  Jobs() : super();
+class SearchPage extends StatefulWidget {
+  SearchPage() : super();
 
   @override
-  JobsState createState() => JobsState();
+  SearchPageState createState() => SearchPageState();
 }
 
 class Debouncer {
@@ -28,7 +28,7 @@ class Debouncer {
   }
 }
 
-class JobsState extends State<Jobs> {
+class SearchPageState extends State<SearchPage> {
   final _debouncer = Debouncer();
 
   List<Subject> ulist = [];
@@ -71,93 +71,85 @@ class JobsState extends State<Jobs> {
   //Main Widget
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'All Users',
-          style: TextStyle(fontSize: 25),
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          //Search Bar to List of typed Subject
-          Container(
-            padding: EdgeInsets.all(15),
-            child: TextField(
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(
-                    color: Colors.grey,
-                  ),
+    return Column(
+      children: <Widget>[
+        //Search Bar to List of typed Subject
+        Container(
+          padding: EdgeInsets.all(15),
+          child: TextField(
+            textInputAction: TextInputAction.search,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(
+                  color: Colors.grey,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
-                ),
-                suffixIcon: InkWell(
-                  child: Icon(Icons.search),
-                ),
-                contentPadding: EdgeInsets.all(15.0),
-                hintText: 'Search ',
               ),
-              onChanged: (string) {
-                _debouncer.run(() {
-                  setState(() {
-                    userLists = ulist
-                        .where(
-                          (u) => (u.text.toLowerCase().contains(
-                                string.toLowerCase(),
-                              )),
-                        )
-                        .toList();
-                  });
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: BorderSide(
+                  color: Colors.blue,
+                ),
+              ),
+              suffixIcon: InkWell(
+                child: Icon(Icons.search),
+              ),
+              contentPadding: EdgeInsets.all(15.0),
+              hintText: 'Search ',
+            ),
+            onChanged: (string) {
+              _debouncer.run(() {
+                setState(() {
+                  userLists = ulist
+                      .where(
+                        (u) => (u.text.toLowerCase().contains(
+                              string.toLowerCase(),
+                            )),
+                      )
+                      .toList();
                 });
-              },
-            ),
+              });
+            },
           ),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.all(5),
-              itemCount: userLists.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(
-                      color: Colors.grey.shade300,
-                    ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            padding: EdgeInsets.all(5),
+            itemCount: userLists.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: Colors.grey.shade300,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        ListTile(
-                          title: Text(
-                            userLists[index].text,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          subtitle: Text(
-                            userLists[index].author ?? "null",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        )
-                      ],
-                    ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(
+                          userLists[index].text,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        subtitle: Text(
+                          userLists[index].author ?? "null",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      )
+                    ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

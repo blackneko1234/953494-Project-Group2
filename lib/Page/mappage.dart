@@ -45,24 +45,19 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("COVID-CHID-SAI Nearby lab"),
-      ),
-      body: currentLatLng == null
-          ? Center(child: CircularProgressIndicator())
-          : GoogleMap(
-              markers: getmarkers(),
-              initialCameraPosition: CameraPosition(
-                target: currentLatLng,
-                zoom: 15,
-              ),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-              myLocationEnabled: true,
+    return currentLatLng == null
+        ? Center(child: CircularProgressIndicator())
+        : GoogleMap(
+            markers: getmarkers(),
+            initialCameraPosition: CameraPosition(
+              target: currentLatLng,
+              zoom: 15,
             ),
-    );
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            myLocationEnabled: true,
+          );
   }
 
   Set<Marker> getmarkers() {
