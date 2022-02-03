@@ -42,37 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     try {
-      /* return ListView.builder(
-        itemCount: itemList.length,
-        itemBuilder: (context, index) {
-          var detail = itemList[index]["rm"];
-          return Card(
-            child: ExpansionTile(
-              title: Text('${itemList[index]["n"]}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              subtitle: Text('Province: ${itemList[index]["p"]}'),
-              children: [
-                detail == ""
-                    ? ListTile(
-                        title: Text('Tel: ${itemList[index]["mob"]}'),
-                        subtitle: Text(
-                            '${itemList[index]["adr"]}\nDetails: ไม่พบข้อมูลในส่วนนี้ '),
-                      )
-                    : ListTile(
-                        title: Text('Tel: ${itemList[index]["mob"]}'),
-                        subtitle: Text(
-                            '${itemList[index]["adr"]}\nDetails: ${itemList[index]["rm"]}'),
-                      ),
-              ],
-            ),
-          );
-        },
-      ); */
       return Column(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(15),
-            child: TextField(
+            child: TextFormField(
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
