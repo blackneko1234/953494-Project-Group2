@@ -17,6 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late final CovidLabApi covidLabApi = CovidLabApi();
   late Map<String, dynamic> res = {};
   late List<dynamic> itemList = [];
+  int _selectedIndex = 0;
   Future<String?> getAllCovid() async {
     var response = await covidLabApi.fetchCovidLab();
     setState(() {
@@ -29,6 +30,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     getAllCovid();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -61,7 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   var detail = itemList[index]["rm"];
                   return Card(
                     child: ExpansionTile(
-                      title: Text('${itemList[index]["n"]}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
+                      title: Text('${itemList[index]["n"]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
                       subtitle: Text('Province: ${itemList[index]["p"]}'),
                       children: [
                         detail == ""
@@ -83,36 +92,57 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MapPage()));
-              },
-              backgroundColor: Colors.teal.shade400,
-              child: Icon(
-                Icons.map,
-                color: Colors.white,
-              ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.black,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: Colors.black,
             ),
-            SizedBox(
-              width: 10,
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+              backgroundColor: Colors.black,
             ),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Jobs()));
-              },
-              backgroundColor: Colors.teal.shade400,
-              child: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: 'Map',
+              backgroundColor: Colors.black,
             ),
-          ]
-        )
-    );
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.teal.shade400,
+          unselectedItemColor: Colors.white,
+          onTap: _onItemTapped,
+        ));
+    // floatingActionButton:
+    //     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+    //   FloatingActionButton(
+    //     onPressed: () {
+    //       Navigator.push(
+    //           context, MaterialPageRoute(builder: (context) => MapPage()));
+    //     },
+    //     backgroundColor: Colors.teal.shade400,
+    //     child: Icon(
+    //       Icons.map,
+    //       color: Colors.white,
+    //     ),
+    //   ),
+    //   SizedBox(
+    //     width: 10,
+    //   ),
+    //   FloatingActionButton(
+    //     onPressed: () {
+    //       Navigator.push(
+    //           context, MaterialPageRoute(builder: (context) => Jobs()));
+    //     },
+    //     backgroundColor: Colors.teal.shade400,
+    //     child: Icon(
+    //       Icons.search,
+    //       color: Colors.white,
+    //     ),
+    //   ),
+    // ]));
   }
 }
