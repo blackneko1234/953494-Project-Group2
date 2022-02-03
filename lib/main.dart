@@ -2,7 +2,6 @@
 
 import 'Page/mappage.dart';
 import 'Page/homepage.dart';
-import 'Page/searchpage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,7 +29,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
-  final tabs = [MyHomePage(), MapPage(), SearchPage()];
+  final tabs = [MyHomePage(), MapPage()];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
