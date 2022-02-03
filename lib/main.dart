@@ -51,7 +51,6 @@ class _MainPageState extends State<MainPage> {
           items: [
             BottomNav("Home", Icon(Icons.home)),
             BottomNav("Map", Icon(Icons.map)),
-            BottomNav("Search", Icon(Icons.search)),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.teal.shade400,
