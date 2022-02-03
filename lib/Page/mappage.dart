@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_final_fields, unused_field, prefer_const_constructors, unnecessary_new, unnecessary_null_comparison, unused_local_variable, avoid_print, prefer_typing_uninitialized_variables, prefer_collection_literals
+// ignore_for_file: unused_import, prefer_final_fields, unused_field, prefer_const_constructors, unnecessary_new, unnecessary_null_comparison, unused_local_variable, avoid_print, prefer_typing_uninitialized_variables, prefer_collection_literals, use_key_in_widget_constructors
 
 import 'dart:async';
 import 'dart:convert';
@@ -8,8 +8,6 @@ import 'package:group2/service/covid_lab_api.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({Key? key}) : super(key: key);
-
   @override
   _MapPageState createState() => _MapPageState();
 }
@@ -40,7 +38,6 @@ class _MapPageState extends State<MapPage> {
             new LatLng(currLocation.latitude, currLocation.longitude);
       });
     });
-    getmarkers();
   }
 
   @override
@@ -69,8 +66,8 @@ class _MapPageState extends State<MapPage> {
             markerId: MarkerId(currentLatLng.toString() + index.toString()),
             position: LatLng(itemList[index]["lat"], itemList[index]["lng"]),
             infoWindow: InfoWindow(
-              title: '${itemList[index]["n"]}',
-            ),
+                title: '${itemList[index]["n"]}',
+                snippet: '${itemList[index]["adr"]}'),
             icon: BitmapDescriptor.defaultMarker,
           ));
         }

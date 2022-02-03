@@ -1,7 +1,7 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_field, prefer_final_fields
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, unused_field, prefer_final_fields, non_constant_identifier_names
 
 import 'Page/mappage.dart';
-import '/Page/homepage.dart';
+import 'Page/homepage.dart';
 import 'Page/searchpage.dart';
 import 'package:flutter/material.dart';
 
@@ -42,28 +42,16 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.teal.shade400,
-          title: Text("COVID CHID-SAI"),
+          title: Text("COVID CHID-SAI Lab Finder"),
           leading: Image.asset("assets/logo.png"),
         ),
         body: tabs[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.black,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.black,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map),
-              label: 'Map',
-              backgroundColor: Colors.black,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-              backgroundColor: Colors.black,
-            ),
+          items: [
+            BottomNav("Home", Icon(Icons.home)),
+            BottomNav("Map", Icon(Icons.map)),
+            BottomNav("Search", Icon(Icons.search)),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.teal.shade400,
@@ -71,4 +59,12 @@ class _MainPageState extends State<MainPage> {
           onTap: _onItemTapped,
         ));
   }
+}
+
+BottomNavigationBarItem BottomNav(String label, Icon icon) {
+  return BottomNavigationBarItem(
+    icon: icon,
+    label: label,
+    backgroundColor: Colors.black,
+  );
 }
