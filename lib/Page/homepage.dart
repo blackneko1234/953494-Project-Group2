@@ -11,32 +11,38 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _debouncer = Debouncer();
   late List<dynamic> itemList = [];
+  late List<dynamic> uitemList = [];
   late Map<String, dynamic> res = {};
   late final CovidLabApi covidLabApi = CovidLabApi();
 
-  Future<String?> getAllCovid() async {
+  Future<List> getAllCovid() async {
     var response = await covidLabApi.fetchCovidLab();
     var status = await Permission.location.status;
     if (!status.isGranted) {
       await Permission.location.request();
     }
-    setState(() {
-      res = json.decode(utf8.decode(response.bodyBytes.toList()));
-      itemList = res["items"];
-    });
+    res = json.decode(utf8.decode(response.bodyBytes.toList()));
+    itemList = res["items"];
+    return itemList;
   }
 
   @override
   void initState() {
     super.initState();
-    getAllCovid();
+    getAllCovid().then((subjectFromServer) {
+      setState(() {
+        uitemList = subjectFromServer;
+        itemList = uitemList;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     try {
-      return ListView.builder(
+      /* return ListView.builder(
         itemCount: itemList.length,
         itemBuilder: (context, index) {
           var detail = itemList[index]["rm"];
@@ -61,9 +67,98 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         },
+      ); */
+      return Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(15),
+            child: TextField(
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
+                ),
+                suffixIcon: InkWell(
+                  child: Icon(Icons.search),
+                ),
+                contentPadding: EdgeInsets.all(15.0),
+                hintText: 'Search ',
+              ),
+              onChanged: (string) {
+                _debouncer.run(() {
+                  setState(() {
+                    itemList = uitemList
+                        .where(
+                          (u) => (u["n"].toLowerCase().contains(
+                                string.toLowerCase(),
+                              )),
+                        )
+                        .toList();
+                  });
+                });
+              },
+            ),
+          ),
+          Expanded(
+              child: ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            padding: EdgeInsets.all(5),
+            itemCount: itemList.length,
+            itemBuilder: (context, index) {
+              var detail = itemList[index]["rm"];
+              return Card(
+                child: ExpansionTile(
+                  title: Text('${itemList[index]["n"]}',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  subtitle: Text('Province: ${itemList[index]["p"]}'),
+                  children: [
+                    detail == ""
+                        ? ListTile(
+                            title: Text('Tel: ${itemList[index]["mob"]}'),
+                            subtitle: Text(
+                                '${itemList[index]["adr"]}\nDetails: ไม่พบข้อมูลในส่วนนี้ '),
+                          )
+                        : ListTile(
+                            title: Text('Tel: ${itemList[index]["mob"]}'),
+                            subtitle: Text(
+                                '${itemList[index]["adr"]}\nDetails: ${itemList[index]["rm"]}'),
+                          ),
+                  ],
+                ),
+              );
+            },
+          ))
+        ],
       );
     } catch (e) {
       return Center(child: CircularProgressIndicator());
     }
+  }
+}
+
+class Debouncer {
+  int? milliseconds;
+  VoidCallback? action;
+  Timer? timer;
+
+  run(VoidCallback action) {
+    if (null != timer) {
+      timer!.cancel();
+    }
+    timer = Timer(
+      Duration(milliseconds: Duration.millisecondsPerSecond),
+      action,
+    );
   }
 }
