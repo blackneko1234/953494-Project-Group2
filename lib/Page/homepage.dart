@@ -72,9 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     itemList = uitemList
                         .where(
-                          (u) => (u["n"].toLowerCase().contains(
-                                string.toLowerCase(),
-                              )),
+                          (u) => (u["p"]
+                                  .toLowerCase()
+                                  .contains(string.toLowerCase()) ||
+                              u["n"]
+                                  .toLowerCase()
+                                  .contains(string.toLowerCase())),
                         )
                         .toList();
                   });
